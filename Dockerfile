@@ -60,16 +60,16 @@ RUN echo "	email = default@example.com" >> /home/dev/.gitconfig \
 	&& echo "	name = default" >> /home/dev/.gitconfig 
 
 # Configure simple vim
-RUN echo -e "\
-	filetype plugin indent on \n\
-	syntax on \n\
-	set term=xterm-256color \n\
-	set backspace=indent,eol,start \n\
-	set tabstop=4 \n\
-	set shiftwidth=4 \n\
-	set softtabstop=4 \n\
-	set expandtab\
-	" > /home/dev/.vimrc
+RUN echo "\
+filetype plugin indent on \n\
+syntax on \n\
+set term=xterm-256color \n\
+set backspace=indent,eol,start \n\
+set tabstop=4 \n\
+set shiftwidth=4 \n\
+set softtabstop=4 \n\
+set expandtab\
+" > /home/dev/.vimrc
 
 # Fix error "Please use a locale setting which supports utf-8."
 # See https://wiki.yoctoproject.org/wiki/TipsAndTricks/ResolvingLocaleIssues

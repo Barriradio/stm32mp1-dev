@@ -106,8 +106,24 @@ RUN wget https://www.st.com/content/ccc/resource/technical/sw-updater/firmware2/
 # Install STM32MP1 SDK
 RUN /bin/bash /home/dev/tmp/stm32mp1-openstlinux-4.19-thud-mp1-19-02-20/sdk/st-image-weston-openstlinux-weston-stm32mp1-x86_64-toolchain-2.6-openstlinux-4.19-thud-mp1-19-02-20.sh -d /home/dev/.stm32mp1-sdk
 
-# Move sources 
+# Move sources
 RUN cp -R /home/dev/tmp/stm32mp1-openstlinux-4.19-thud-mp1-19-02-20/sources /home/dev/src
+
+# Patch TF-A
+RUN cd /home/dev/src/arm-openstlinux_weston-linux-gnueabi/tf-a-stm32mp-2.0-r0 \
+    && mkdir /home/dev/src/arm-openstlinux_weston-linux-gnueabi/tf-a-stm32mp-2.0-r0/tf-a-stm32mp-src \
+    && tar -xvf v2.0.tar.gz -C /home/dev/src/arm-openstlinux_weston-linux-gnueabi/tf-a-stm32mp-2.0-r0/tf-a-stm32mp-src --strip-components=1 \ 
+    && rm v2.0.tar.gz \
+    && cd tf-a-stm32mp-src \
+    && for p in `ls -1 ../*.patch`; do patch -p1 < $p; done 
+
+# Patch U-Boot
+RUN cd /home/dev/src/arm-openstlinux_weston-linux-gnueabi/u-boot-stm32mp-2018.11-r0 \
+    && mkdir /home/dev/src/arm-openstlinux_weston-linux-gnueabi/u-boot-stm32mp-2018.11-r0/u-boot-stm32mp-src \
+    && tar -xvf v2018.11.tar.gz -C /home/dev/src/arm-openstlinux_weston-linux-gnueabi/u-boot-stm32mp-2018.11-r0/u-boot-stm32mp-src --strip-components=1 \
+    && rm v2018.11.tar.gz \
+    && cd u-boot-stm32mp-src \
+    && for p in `ls -1 ../*.patch`; do patch -p1 < $p; done 
 
 # Clean
 RUN rm -rvf /home/dev/tmp
